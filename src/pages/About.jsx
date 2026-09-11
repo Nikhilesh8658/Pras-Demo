@@ -31,7 +31,7 @@ export default function AboutPage() {
   useDocumentTitle("About Pras Minerals");
   return (
     <>
-      <PageIntro eyebrow="About Pras Minerals" title="A decade of trusted mineral exports." description="Pras Mineral Exports Pvt. Ltd. is a Hyderabad-based Private Limited company and a leading processor, supplier, and exporter of Quartz Powder, Soda Feldspar, Granular Quartz Lump, and more." />
+      <PageIntro eyebrow="About Pras Minerals" title="A decade of trusted mineral exports." description="" />
 
       <section className="container-page section-pad">
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center">

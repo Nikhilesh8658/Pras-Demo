@@ -176,4 +176,9 @@
 @utility reveal { animation: reveal 0.55s ease-out both; }
 
 @keyframes reveal { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.gallery-marquee-track { animation: marquee-scroll 28s linear infinite; }
+.gallery-marquee:hover .gallery-marquee-track { animation-play-state: paused; }
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }

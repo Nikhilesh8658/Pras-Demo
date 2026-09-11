@@ -35,3 +35,13 @@ export const products = [
 ];
 
 export const industries = ["Glass Industry", "Ceramics & Potteries", "Electronics Industry", "Petroleum Industry", "Ferro Silicon Industry"];
+
+export const categoryAccent = {
+  "Potash Feldspar": "#c9895f",
+  "Potash Feldspar Powder": "#c6ac74",
+  "Soda Feldspar": "#9a9ba3",
+  "Quartz Lump": "#6fa3b8",
+  "Quartz Mineral": "#c2a35c",
+  "Quartz Powder": "#a6a0c4",
+  Soapstone: "#7f9a7c",
+};

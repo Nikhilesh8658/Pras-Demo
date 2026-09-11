@@ -1,44 +1,64 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Grid2X2, List, Search, SlidersHorizontal, X } from "lucide-react";
+import { Search, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/commerce";
-import { categories, products } from "@/lib/catalog";
+import { categories, categoryAccent, products } from "@/lib/catalog";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 export default function ProductsPage() {
   useDocumentTitle("Mineral Product Catalog — Pras Minerals");
   const [searchParams, setSearchParams] = useSearchParams();
   const q = searchParams.get("q") ?? "";
-  const [query, setQuery] = useState(q);
-  const [category, setCategory] = useState("All");
-  const [sort, setSort] = useState("featured");
-  const [list, setList] = useState(false);
+  const initialSelected = useMemo(() => (q && categories.some((c) => c.name === q) ? q : null), [q]);
+  const [query, setQuery] = useState(q && !categories.some((c) => c.name === q) ? q : "");
+  const [selected, setSelected] = useState(initialSelected);
   const [filters, setFilters] = useState(false);
+
+  const toggleCategory = (name) => setSelected((old) => (old === name ? null : name));
+
   const visible = useMemo(() => {
-    const result = products.filter(
-      (p) =>
-        (!query || `${p.name} ${p.model} ${p.category}`.toLowerCase().includes(query.toLowerCase())) &&
-        (category === "All" || p.category === category),
-    );
-    return [...result].sort((a, b) =>
-      sort === "low"
-        ? (a.price ?? 99999) - (b.price ?? 99999)
-        : sort === "high"
-          ? (b.price ?? 0) - (a.price ?? 0)
-          : a.name.localeCompare(b.name),
-    );
-  }, [query, category, sort]);
+    return products
+      .filter(
+        (p) =>
+          (!query || `${p.name} ${p.model} ${p.category}`.toLowerCase().includes(query.toLowerCase())) &&
+          (!selected || selected === p.category),
+      )
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [query, selected]);
 
   const Filters = () => (
     <div>
-      <h3 className="font-display font-semibold">Categories</h3>
-      <div className="mt-3 space-y-2">
-        {["All", ...categories.map((c) => c.name)].map((c) => (
-          <label key={c} className="flex cursor-pointer items-center gap-2 text-sm">
-            <input type="radio" name="category" checked={category === c} onChange={() => setCategory(c)} /> {c}
-          </label>
-        ))}
+      <div className="flex items-center justify-between">
+        <h3 className="font-display font-semibold">Categories</h3>
+        {selected && (
+          <button onClick={() => setSelected(null)} className="text-xs font-semibold text-brand hover:underline">
+            Clear
+          </button>
+        )}
+      </div>
+      <div className="mt-4 max-h-[420px] space-y-1.5 overflow-y-auto pr-1">
+        {categories.map((c) => {
+          const checked = selected === c.name;
+          const accent = categoryAccent[c.name] ?? "#41507a";
+          return (
+            <button
+              key={c.name}
+              type="button"
+              onClick={() => toggleCategory(c.name)}
+              className={`flex w-full cursor-pointer items-center gap-3 rounded-xl border px-3 py-2.5 text-sm transition ${checked ? "border-transparent bg-brand-soft shadow-sm" : "border-line bg-card hover:border-brand/40 hover:bg-brand-soft/50"}`}
+            >
+              <span
+                className="size-2 shrink-0 rounded-full transition"
+                style={{ backgroundColor: checked ? accent : "transparent", boxShadow: checked ? "none" : `inset 0 0 0 2px ${accent}` }}
+              />
+              <span className="min-w-0 flex-1 text-left">
+                <span className={`block truncate font-medium ${checked ? "text-brand" : ""}`}>{c.name}</span>
+              </span>
+              <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${checked ? "bg-card text-brand" : "bg-ground text-muted-foreground"}`}>{c.count}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -48,7 +68,9 @@ export default function ProductsPage() {
       <div className="container-page py-10">
         <div className="grid gap-8 lg:grid-cols-[240px_1fr]">
           <aside className="hidden lg:block">
-            <Filters />
+            <div className="sticky top-24 rounded-2xl border border-line bg-card p-5 shadow-card">
+              <Filters />
+            </div>
           </aside>
           <main>
             <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3">
@@ -71,27 +93,14 @@ export default function ProductsPage() {
                 <SlidersHorizontal /> Filters
               </Button>
             </div>
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+            <div className="mt-4">
               <p className="text-sm text-muted-foreground">
                 <strong className="text-foreground">{visible.length}</strong> products
               </p>
-              <div className="flex items-center gap-2">
-                <select value={sort} onChange={(e) => setSort(e.target.value)} className="h-9 rounded-lg border border-line bg-card px-3 text-sm">
-                  <option value="featured">Sort: Featured</option>
-                  <option value="low">Price: Low to high</option>
-                  <option value="high">Price: High to low</option>
-                </select>
-                <Button variant={!list ? "secondary" : "ghost"} size="icon" onClick={() => setList(false)} aria-label="Grid view">
-                  <Grid2X2 />
-                </Button>
-                <Button variant={list ? "secondary" : "ghost"} size="icon" onClick={() => setList(true)} aria-label="List view">
-                  <List />
-                </Button>
-              </div>
             </div>
-            <div className={`mt-6 grid gap-5 ${list ? "grid-cols-1" : "md:grid-cols-2 xl:grid-cols-3"}`}>
+            <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               {visible.map((p) => (
-                <ProductCard key={p.id} product={p} list={list} />
+                <ProductCard key={p.id} product={p} />
               ))}
             </div>
             <div className="mt-10 flex justify-center gap-2">

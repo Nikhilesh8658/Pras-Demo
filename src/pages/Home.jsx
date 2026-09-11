@@ -5,7 +5,7 @@ import openPitMine from "@/assets/mining/open-pit-mine.jpg";
 import quarryExcavation from "@/assets/mining/quarry-excavation.jpg";
 import quarryLoading from "@/assets/mining/quarry-loading.jpg";
 import mineTerrain from "@/assets/mining/mine-terrain.jpg";
-import { AboutBand, AboutTeaser, CategoryGrid, IndustriesSection, QuoteForm, WhyUs } from "@/components/sections";
+import { AboutTeaser, CategoryGrid, GalleryTeaser, IndustriesSection, QuoteForm, WhyUs } from "@/components/sections";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 const heroSlides = [
@@ -33,8 +33,7 @@ function HeroSlider() {
       ))}
       <div className="container-page relative z-10 flex h-full flex-col justify-center">
         <span className="w-fit rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-ink-foreground ring-1 ring-white/25 backdrop-blur">Trusted mineral exporter · Hyderabad, India</span>
-        <h1 className="sr-only">Pras Minerals — Quality minerals, delivered worldwide.</h1>
-        <p className="mt-5 max-w-lg text-sm leading-relaxed text-ink-foreground/80 sm:text-base">Pras Minerals manufactures, supplies, and exports Potash Feldspar, Soda Feldspar, Quartz, and Soapstone at reasonable prices for ceramics, glass, paints, and foundry industries.</p>
+        <h1 className="mt-5 font-display text-4xl font-semibold text-ink-foreground sm:text-4xl">Quality minerals, delivered worldwide.</h1>
         <div className="mt-7 flex flex-wrap gap-3">
           <Button asChild size="lg"><a href="/products">Explore products <ArrowRight /></a></Button>
           <Button asChild variant="outline" size="lg" className="border-white/30 bg-transparent text-ink-foreground hover:bg-white/10"><a href="/contact">Request a quote</a></Button>
@@ -57,6 +56,6 @@ function HeroSlider() {
 export default function HomePage() {
   useDocumentTitle("Pras Minerals — Quartz & Feldspar Exporters");
   return (
-    <main><HeroSlider /><AboutTeaser /><CategoryGrid /><IndustriesSection /><WhyUs /><AboutBand /><section className="bg-brand-soft"><div className="container-page section-pad"><div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]"><div><p className="eyebrow text-brand">Request a quote</p><h2 className="mt-3 font-display text-4xl font-semibold">Need a custom solution?</h2><p className="mt-4 text-muted-foreground">Contact our team for custom requirements, bulk orders, technical specifications, or project pricing.</p></div><QuoteForm /></div></div></section></main>
+    <main><HeroSlider /><AboutTeaser /><CategoryGrid /><IndustriesSection /><WhyUs /><GalleryTeaser /><section className="bg-brand-soft"><div className="container-page section-pad"><div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]"><div><p className="eyebrow text-brand">Request a quote</p><h2 className="mt-3 font-display text-4xl font-semibold">Need a custom solution?</h2><p className="mt-4 text-muted-foreground">Contact our team for custom requirements, bulk orders, technical specifications, or project pricing.</p></div><QuoteForm /></div></div></section></main>
   );
 }

@@ -9,6 +9,7 @@ import ProductsPage from "./pages/products/Products";
 import ProductDetailPage from "./pages/products/ProductDetail";
 import AboutPage from "./pages/About";
 import TeamPage from "./pages/Team";
+import GalleryPage from "./pages/Gallery";
 import ContactPage from "./pages/Contact";
 import ApplicationsPage from "./pages/Applications";
 import SolutionsPage from "./pages/Solutions";
@@ -97,6 +98,7 @@ function AppRoutes() {
       <Route path="/products/:productId" element={<ProductDetailPage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/team" element={<TeamPage />} />
+      <Route path="/gallery" element={<GalleryPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/applications" element={<ApplicationsPage />} />
       <Route path="/solutions" element={<SolutionsPage />} />
