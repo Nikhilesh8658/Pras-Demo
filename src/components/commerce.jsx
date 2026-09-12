@@ -1,6 +1,6 @@
 import { Link, NavLink as RouterNavLink } from "react-router-dom";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { ArrowRight, ChevronDown, Facebook, Image, Info, Instagram, Linkedin, Mail, MapPin, Menu, Minus, Package, Phone, Plus, ShoppingCart, Trash2, Twitter, Users, X } from "lucide-react";
+import { ArrowRight, ChevronDown, Facebook, Image, Info, Instagram, Linkedin, Mail, MapPin, Menu, MessageCircle, Minus, Package, Phone, Plus, ShoppingCart, Trash2, Twitter, Users, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { products, categories, categoryAccent } from "@/lib/catalog";
 import logo from "@/assets/Pras_Logo.png";
@@ -18,23 +18,27 @@ export function CommerceProvider({ children }) {
 
 export function useCommerce() { const value = useContext(CommerceContext); if (!value) throw new Error("CommerceProvider missing"); return value; }
 
+// Client demo: navigation is temporarily frozen so the header can be shown without linking anywhere.
+const NAV_FROZEN = true;
+const freezeClick = (e) => { if (NAV_FROZEN) e.preventDefault(); };
+
 export function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false); const [scrolled, setScrolled] = useState(false); const [mega, setMega] = useState(false);
   useEffect(() => { const onScroll = () => setScrolled(window.scrollY > 24); onScroll(); window.addEventListener("scroll", onScroll); return () => window.removeEventListener("scroll", onScroll); }, []);
   const links = [{ label: "Home", to: "/" }, { label: "About Us", to: "/about" }, { label: "Our Team", to: "/team" }, { label: "Gallery", to: "/gallery" }];
   return <header className={`sticky top-0 z-50 border-b border-line bg-ground/95 backdrop-blur-md transition-shadow ${scrolled ? "shadow-soft" : ""}`}>
     <div className="container-page flex h-24 items-center justify-between gap-4">
-      <Link to="/" className="flex min-w-0 shrink-0 items-center gap-3"><img src={logo} alt="Pras Minerals" width={64} height={64} className="size-20 shrink-0 rounded-full object-contain drop-shadow-sm ring-1 ring-line" /><span className="min-w-0"><strong className="block truncate font-display text-xl">Pras Minerals</strong><small className="hidden text-[10px] font-semibold uppercase tracking-widest text-muted-foreground sm:block">Mineral Exports</small></span></Link>
+      <Link to="/" onClick={freezeClick} className="group flex min-w-0 shrink-0 items-center gap-3"><img src={logo} alt="Pras Minerals" width={64} height={64} className="size-20 shrink-0 rounded-full object-contain drop-shadow-sm ring-1 ring-line transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-elevated group-hover:ring-brand/50" /><span className="min-w-0"><strong className="block truncate font-display text-xl transition-colors group-hover:text-brand">Pras Minerals</strong><small className="hidden text-[10px] font-semibold uppercase tracking-widest text-muted-foreground sm:block">Mineral Exports</small></span></Link>
       <div className="flex items-center gap-8">
-        <nav className="hidden items-center gap-6 xl:flex">{links.slice(0,1).map((l) => <NavLink key={l.to} {...l} />)}{links.slice(1,2).map((l) => <NavLink key={l.to} {...l} />)}<div onMouseEnter={() => setMega(true)} onMouseLeave={() => setMega(false)} className="relative"><Link to="/products" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">Products <ChevronDown className="size-3" /></Link>{mega && <MegaMenu />}</div>{links.slice(2).map((l) => <NavLink key={l.to} {...l} />)}</nav>
-        <Button asChild size="lg" className="hidden xl:inline-flex"><Link to="/contact">Connect with us</Link></Button>
-        <Button variant="ghost" size="icon" className="xl:hidden" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">{mobileOpen ? <X /> : <Menu />}</Button>
+        <nav className="hidden items-center gap-6 xl:flex">{links.slice(0,1).map((l) => <NavLink key={l.to} {...l} />)}{links.slice(1,2).map((l) => <NavLink key={l.to} {...l} />)}<div onMouseEnter={() => setMega(true)} onMouseLeave={() => setMega(false)} className="relative"><Link to="/products" onClick={freezeClick} className="inline-flex items-center gap-1 rounded-lg px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Products <ChevronDown className="size-3 transition-transform group-hover:rotate-180" /></Link>{mega && <MegaMenu />}</div>{links.slice(2).map((l) => <NavLink key={l.to} {...l} />)}</nav>
+        <Button asChild size="lg" className="hidden transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-elevated xl:inline-flex"><Link to="/contact" onClick={freezeClick}><MessageCircle className="size-4" /> Connect with us</Link></Button>
+        <Button variant="ghost" size="icon" className="transition-transform hover:scale-110 xl:hidden" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">{mobileOpen ? <X /> : <Menu />}</Button>
       </div>
-    </div>{mobileOpen && <div className="border-t border-line bg-card px-5 py-5 xl:hidden"><nav className="grid gap-1">{links.slice(0,2).map((l) => <NavLink key={l.to} {...l} />)}<NavLink label="Products" to="/products" />{links.slice(2).map((l) => <NavLink key={l.to} {...l} />)}</nav><Button asChild size="lg" className="mt-4 w-full"><Link to="/contact">Connect with us</Link></Button></div>}</header>;
+    </div>{mobileOpen && <div className="border-t border-line bg-card px-5 py-5 xl:hidden"><nav className="grid gap-1">{links.slice(0,2).map((l) => <NavLink key={l.to} {...l} />)}<NavLink label="Products" to="/products" />{links.slice(2).map((l) => <NavLink key={l.to} {...l} />)}</nav><Button asChild size="lg" className="mt-4 w-full transition-transform duration-200 hover:-translate-y-0.5"><Link to="/contact" onClick={freezeClick}><MessageCircle className="size-4" /> Connect with us</Link></Button></div>}</header>;
 }
 
-function NavLink({ label, to }) { return <RouterNavLink to={to} end={to === "/"} className={({ isActive }) => `block rounded-lg px-2 py-2 text-sm font-medium transition-colors hover:text-foreground ${isActive ? "text-foreground" : "text-muted-foreground"}`}>{label}</RouterNavLink>; }
-function MegaMenu() { return <div className="absolute left-1/2 top-full w-[520px] -translate-x-1/2 pt-4"><div className="rounded-2xl border border-line bg-card p-6 shadow-elevated"><p className="eyebrow">Product category</p><div className="mt-3 grid grid-cols-2 gap-2">{categories.map((c) => <Link key={c.name} to={`/products?q=${encodeURIComponent(c.name)}`} className="rounded-xl p-3 hover:bg-brand-soft"><strong className="block text-sm">{c.name}</strong><small className="text-muted-foreground">{c.count || "Custom"} solutions</small></Link>)}</div></div></div>; }
+function NavLink({ label, to }) { return <RouterNavLink to={to} end={to === "/"} onClick={freezeClick} className={({ isActive }) => `block rounded-lg px-2 py-2 text-sm font-medium transition-all hover:-translate-y-0.5 hover:text-foreground ${isActive ? "text-foreground" : "text-muted-foreground"}`}>{label}</RouterNavLink>; }
+function MegaMenu() { return <div className="absolute left-1/2 top-full w-[520px] -translate-x-1/2 pt-4"><div className="rounded-2xl border border-line bg-card p-6 shadow-elevated"><p className="eyebrow">Product category</p><div className="mt-3 grid grid-cols-2 gap-2">{categories.map((c) => <Link key={c.name} to={`/products?q=${encodeURIComponent(c.name)}`} onClick={freezeClick} className="rounded-xl p-3 transition-colors hover:bg-brand-soft"><strong className="block text-sm">{c.name}</strong><small className="text-muted-foreground">{c.count || "Custom"} solutions</small></Link>)}</div></div></div>; }
 
 export function ProductCard({ product, list = false }) {
   const accent = categoryAccent[product.category] ?? "#41507a";
