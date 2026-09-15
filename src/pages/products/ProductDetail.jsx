@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { products } from "@/lib/catalog";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { freezeClick } from "@/components/commerce";
 
 export default function ProductDetailPage() {
   const { productId } = useParams();
@@ -20,7 +21,7 @@ export default function ProductDetailPage() {
     <main>
       <div className="container-page py-8">
         <p className="text-sm text-muted-foreground">
-          <Link to="/products">Products</Link> / {product.category} / {product.model}
+          <Link to="/products" onClick={freezeClick}>Products</Link> / {product.category} / {product.model}
         </p>
         <div className="mt-7 grid gap-10 lg:grid-cols-2">
           <div>
@@ -53,7 +54,7 @@ export default function ProductDetailPage() {
             <div className="mt-7 font-display text-2xl font-semibold">Pricing on request</div>
             <div className="mt-7 flex flex-wrap gap-3">
               <Button asChild size="lg">
-                <Link to="/contact">Request quote</Link>
+                <Link to="/contact" onClick={freezeClick}>Request quote</Link>
               </Button>
             </div>
           </div>

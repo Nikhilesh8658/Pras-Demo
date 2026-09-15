@@ -1,5 +1,5 @@
-import { Component } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { Component, useEffect } from "react";
+import { Link, Route, Routes, useLocation } from "react-router-dom";
 
 import { reportLovableError } from "./lib/lovable-error-reporting";
 import { CommerceProvider, SiteFooter, SiteHeader } from "@/components/commerce";
@@ -90,6 +90,14 @@ class RootErrorBoundary extends Component {
   }
 }
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
 function AppRoutes() {
   return (
     <Routes>
@@ -112,6 +120,7 @@ export default function App() {
   return (
     <RootErrorBoundary>
       <CommerceProvider>
+        <ScrollToTop />
         <SiteHeader />
         <AppRoutes />
         <SiteFooter />

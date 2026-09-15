@@ -7,6 +7,7 @@ import quarryLoading from "@/assets/mining/quarry-loading.jpg";
 import mineTerrain from "@/assets/mining/mine-terrain.jpg";
 import { AboutTeaser, CategoryGrid, GalleryTeaser, IndustriesSection, QuoteForm, WhyUs } from "@/components/sections";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { freezeClick } from "@/components/commerce";
 
 const heroSlides = [
   { image: openPitMine, label: "Open-pit mineral extraction" },
@@ -24,21 +25,22 @@ function HeroSlider() {
   const prev = () => setActive((i) => (i - 1 + heroSlides.length) % heroSlides.length);
   const next = () => setActive((i) => (i + 1) % heroSlides.length);
   return (
-    <section className="relative h-[460px] w-full overflow-hidden sm:h-[520px]">
+    <section className="relative min-h-[600px] w-full overflow-hidden bg-ink sm:h-[520px] sm:min-h-0">
       {heroSlides.map((slide, i) => (
-        <div key={slide.label} className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${i === active ? "opacity-100" : "opacity-0"}`}>
+        <div key={slide.label} className={`absolute inset-x-0 top-0 h-[460px] transition-opacity duration-1000 ease-in-out sm:inset-0 sm:h-full ${i === active ? "opacity-100" : "opacity-0"}`}>
           <img src={slide.image} alt={slide.label} width={1920} height={1080} className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/45 to-ink/10" />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-ink sm:hidden" />
         </div>
       ))}
-      <div className="container-page relative z-10 flex h-full flex-col justify-center">
+      <div className="container-page relative z-10 flex h-full flex-col justify-center py-16 sm:py-0">
         <span className="w-fit rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-ink-foreground ring-1 ring-white/25 backdrop-blur">Trusted mineral exporter · Hyderabad, India</span>
-        <h1 className="mt-5 font-display text-4xl font-semibold text-ink-foreground sm:text-4xl">Quality minerals, delivered worldwide.</h1>
-        <div className="mt-7 flex flex-wrap gap-3">
-          <Button asChild size="lg"><a href="/products">Explore products <ArrowRight /></a></Button>
-          <Button asChild variant="outline" size="lg" className="border-white/30 bg-transparent text-ink-foreground hover:bg-white/10"><a href="/contact">Request a quote</a></Button>
+        <h1 className="mt-4 font-display text-3xl font-semibold text-ink-foreground sm:mt-5 sm:text-4xl">Quality minerals, delivered worldwide.</h1>
+        <div className="mt-5 flex flex-wrap gap-3 sm:mt-7">
+          <Button asChild size="lg"><a href="/products" onClick={freezeClick}>Explore products <ArrowRight /></a></Button>
+          <Button asChild variant="outline" size="lg" className="border-white/30 bg-transparent text-ink-foreground hover:bg-white/10"><a href="/contact" onClick={freezeClick}>Request a quote</a></Button>
         </div>
-        <div className="mt-10 flex flex-wrap gap-8 border-t border-white/15 pt-6">
+        <div className="mt-8 flex flex-wrap gap-6 border-t border-white/15 pt-6 sm:mt-10 sm:gap-8">
           <div><strong className="font-display text-xl text-ink-foreground">15+ yrs</strong><p className="mt-1 text-xs text-ink-foreground/70">Industry experience</p></div>
           <div><strong className="font-display text-xl text-ink-foreground">GST</strong><p className="mt-1 text-xs text-ink-foreground/70">Verified supplier</p></div>
           <div><strong className="font-display text-xl text-ink-foreground">Global</strong><p className="mt-1 text-xs text-ink-foreground/70">Export inquiries welcome</p></div>

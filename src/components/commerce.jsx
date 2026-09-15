@@ -19,8 +19,8 @@ export function CommerceProvider({ children }) {
 export function useCommerce() { const value = useContext(CommerceContext); if (!value) throw new Error("CommerceProvider missing"); return value; }
 
 // Client demo: navigation is temporarily frozen so the header can be shown without linking anywhere.
-const NAV_FROZEN = true;
-const freezeClick = (e) => { if (NAV_FROZEN) e.preventDefault(); };
+export const NAV_FROZEN = true;
+export const freezeClick = (e) => { if (NAV_FROZEN) e.preventDefault(); };
 
 export function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false); const [scrolled, setScrolled] = useState(false); const [mega, setMega] = useState(false);
@@ -44,7 +44,7 @@ export function ProductCard({ product, list = false }) {
   const accent = categoryAccent[product.category] ?? "#41507a";
   return (
     <article className={`group overflow-hidden rounded-2xl border border-line bg-card shadow-card transition hover:-translate-y-1 hover:shadow-elevated ${list ? "grid sm:grid-cols-[280px_1fr]" : ""}`} style={{ "--accent": accent }}>
-      <Link to={`/products/${product.id}`} className="relative block overflow-hidden bg-ground">
+      <Link to={`/products/${product.id}`} onClick={freezeClick} className="relative block overflow-hidden bg-ground">
         <img src={product.image} alt={product.name} width={900} height={720} loading="lazy" className={`w-full object-cover transition duration-500 ease-out group-hover:scale-110 ${list ? "h-full min-h-72" : "aspect-[4/4.4] sm:aspect-square"}`} />
         <span className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: `linear-gradient(to top, color-mix(in oklab, var(--accent) 55%, transparent), transparent 60%)` }} />
         <span className="pointer-events-none absolute inset-0 opacity-0 shadow-[inset_0_0_0_3px_var(--accent)] transition-opacity duration-300 group-hover:opacity-70" />
@@ -52,7 +52,7 @@ export function ProductCard({ product, list = false }) {
       </Link>
       <div className="flex flex-col justify-center p-5">
         <p className="text-xs font-semibold text-muted-foreground">{product.model}</p>
-        <Link to={`/products/${product.id}`}>
+        <Link to={`/products/${product.id}`} onClick={freezeClick}>
           <h3 className="mt-1 font-display text-lg font-semibold leading-snug transition-colors group-hover:text-[var(--accent)]">{product.name}</h3>
         </Link>
       </div>
@@ -86,7 +86,7 @@ export function SiteFooter() {
     <footer className="mt-0 bg-ink text-ink-foreground">
       <div className="container-page grid gap-12 py-16 lg:grid-cols-[1.4fr_3fr]">
         <div>
-          <Link to="/" className="flex items-center gap-4">
+          <Link to="/" onClick={freezeClick} className="flex items-center gap-4">
             <img src={logo} alt="Pras Minerals" width={80} height={80} className="size-20 shrink-0 rounded-full object-cover ring-2 ring-ink-foreground/15" />
             <strong className="font-display text-2xl">Pras Minerals</strong>
           </Link>
@@ -104,6 +104,7 @@ export function SiteFooter() {
                 href={href}
                 target="_blank"
                 rel="noreferrer"
+                onClick={freezeClick}
                 aria-label={label}
                 className="grid size-10 place-items-center rounded-full border border-ink-foreground/15 text-ink-foreground/70 transition-all duration-300 hover:-translate-y-1 hover:border-brand hover:bg-brand hover:text-brand-foreground hover:shadow-elevated"
               >
@@ -124,6 +125,7 @@ export function SiteFooter() {
                   <li key={label}>
                     <Link
                       to={to}
+                      onClick={freezeClick}
                       className="group -mx-2 flex items-center gap-3 rounded-lg px-2 py-2 transition-all duration-200 hover:translate-x-1 hover:bg-ink-foreground/5"
                     >
                       <span className="grid size-8 shrink-0 place-items-center rounded-full bg-ink-foreground/5 text-ink-foreground/50 transition-colors duration-200 group-hover:bg-brand group-hover:text-brand-foreground">
